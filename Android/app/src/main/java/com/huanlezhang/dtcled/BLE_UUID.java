@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface BLE_UUID {
 
-    String DEVICE_ADDR = "3C:A3:08:A8:29:54";
+    String DEVICE_ADDR = "C8:DF:84:33:A9:1F";
 
     UUID LED_SERVICE_UUID = UUID.fromString("0000ffe5-0000-1000-8000-00805f9b34fb");
     UUID LED_CHARACTERISTIC_UUID = UUID.fromString("0000ffe9-0000-1000-8000-00805f9b34fb");

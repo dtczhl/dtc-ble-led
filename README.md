@@ -9,3 +9,7 @@ I have some [MagicLight BLE light bulbs](https://www.amazon.com/Magic-Light-Blue
 <img src="./images/led.jpg" alt="led.png" width=200>
 
 More about how to control these LED bulbs, refer to this [repo](https://github.com/skydoves/MagicLight-Controller)
+
+Note:
+
+* Enable  Location permission to your app if it cannot scan BLE devices.

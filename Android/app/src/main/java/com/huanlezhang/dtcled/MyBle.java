@@ -54,6 +54,7 @@ public class MyBle {
     private final BluetoothGattCallback mBleGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            Log.d(TAG, "scan result");
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(TAG, "gatt found");
 
@@ -84,6 +85,9 @@ public class MyBle {
     };
 
     public MyBle(Context context) {
+
+        Log.d(TAG, "MyBle");
+
         mContext = context;
 
         Activity activity = (Activity) mContext;
@@ -108,9 +112,9 @@ public class MyBle {
         }
 
 
-        ScanFilter.Builder scannFilterBuilder = new ScanFilter.Builder();
-        scannFilterBuilder.setDeviceAddress(BLE_UUID.DEVICE_ADDR);
-        ScanFilter scanFilter = scannFilterBuilder.build();
+        ScanFilter.Builder scanFilterBuilder = new ScanFilter.Builder();
+        scanFilterBuilder.setDeviceAddress(BLE_UUID.DEVICE_ADDR);
+        ScanFilter scanFilter = scanFilterBuilder.build();
 
         ScanSettings.Builder builder = new ScanSettings.Builder();
         builder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
@@ -118,6 +122,8 @@ public class MyBle {
 
         mBluetoothScanner = mBluetoothAdapter.getBluetoothLeScanner();
         mBluetoothScanner.startScan(Arrays.asList(scanFilter), builder.build(), mBleScanCallback);
+
+        Log.d(TAG, "scan starts");
 
     }
 
@@ -129,9 +135,25 @@ public class MyBle {
             } else {
                 mLivingRoomCharacteristic.setValue(BLE_UUID.LED_OFF);
             }
-            return mLivingRoomGatt.writeCharacteristic(mLivingRoomCharacteristic);
+            if (mLivingRoomGatt.writeCharacteristic(mLivingRoomCharacteristic)) {
+                return true;
+            } else {
+                connect();
+                return false;
+            }
+
+
         }
         return false;
+    }
+
+    public void clearBles() {
+
+        if (mLivingRoomGatt != null) {
+            mLivingRoomGatt.disconnect();
+            mLivingRoomGatt = null;
+            mLivingRoomCharacteristic = null;
+        }
     }
 
 }

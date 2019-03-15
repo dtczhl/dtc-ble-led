@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ToggleButton;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.BLUETOOTH_ADMIN
     };
     private final int PERMISSION_ID = 1;
-    private final int BLE_REQUREST_ID = 2;
+    private final int BLE_REQUEST_ID = 2;
 
     private MyBle mMyBle;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d(TAG, "Program Starts");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, BLE_REQUREST_ID);
+            startActivityForResult(enableBtIntent, BLE_REQUEST_ID);
         } else {
             mMyBle = new MyBle(this);
         }
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode == BLE_REQUREST_ID) {
+        if (requestCode == BLE_REQUEST_ID) {
             mMyBle = new MyBle(this);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -80,5 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void aboutMe(View view) {
         AboutMe.showDialog(this);
+    }
+
+    public void clearBle(View view) {
+        mMyBle.clearBles();
     }
 }
